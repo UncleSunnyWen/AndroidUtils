@@ -22,7 +22,7 @@ public class FloatWindowManager {
                 .getSystemService(Context.WINDOW_SERVICE);
     }
 
-    public static FloatWindowManager getInstance(Context context) {
+    public static synchronized FloatWindowManager getInstance(Context context) {
         if (instance == null) {
             instance = new FloatWindowManager(context);
         }
