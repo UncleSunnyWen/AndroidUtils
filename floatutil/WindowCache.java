@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class WindowCache {
 
-    private static WindowCache instance;
+    private volatile static WindowCache sInstance = null;
 
     private SparseArray<View> sWindows;
 
@@ -22,12 +22,17 @@ public class WindowCache {
         sWindows = new SparseArray<>();
     }
 
-    public static synchronized WindowCache getInstance() {
-        if (instance == null) {
-            instance = new WindowCache();
+    public static WindowCache getInstance() {
+        if (sInstance == null) {
+            synchronized (WindowCache.class) {
+                if (sInstance == null) {
+                    sInstance = new WindowCache();
+                }
+            }
         }
-        return instance;
+        return sInstance;
     }
+
 
     public boolean isCached(View view) {
         if (view == null) {
