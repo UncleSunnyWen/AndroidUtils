@@ -41,16 +41,20 @@ public class LottieCache {
     private static final Map<String, LottieComposition> ASSET_STRONG_REF_CACHE = new HashMap<>();
     private static final Map<String, WeakReference<LottieComposition>> ASSET_WEAK_REF_CACHE =
             new HashMap<>();
-    private static LottieCache instance;
+    private volatile static LottieCache sInstance = null;
 
     private LottieCache() {
     }
 
-    public static synchronized LottieCache getInstance() {
-        if (instance == null) {
-            instance = new LottieCache();
+    public static LottieCache getInstance() {
+        if (sInstance == null) {
+            synchronized (LottieCache.class) {
+                if (sInstance == null) {
+                    sInstance = new LottieCache();
+                }
+            }
         }
-        return instance;
+        return sInstance;
     }
 
     public void putCache(@RawRes final int animationResId, LottieComposition composition,
