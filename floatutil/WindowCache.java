@@ -33,7 +33,6 @@ public class WindowCache {
         return sInstance;
     }
 
-
     public boolean isCached(View view) {
         if (view == null) {
             return false;
