@@ -14,7 +14,7 @@ public class FloatWindowManager {
 
     static final String TAG = "FloatWindowManager";
 
-    private static FloatWindowManager instance;
+    private volatile static FloatWindowManager sInstance = null;
     private WindowManager mSysWindowManager;
 
     private FloatWindowManager(Context context) {
@@ -22,11 +22,15 @@ public class FloatWindowManager {
                 .getSystemService(Context.WINDOW_SERVICE);
     }
 
-    public static synchronized FloatWindowManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new FloatWindowManager(context);
+    public static FloatWindowManager getInstance() {
+        if (sInstance == null) {
+            synchronized (WindowCache.class) {
+                if (sInstance == null) {
+                    sInstance = new FloatWindowManager(context);
+                }
+            }
         }
-        return instance;
+        return sInstance;
     }
 
     public void addView(View view, WindowManager.LayoutParams params) {
