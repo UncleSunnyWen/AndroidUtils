@@ -24,7 +24,7 @@ public class FloatWindowManager {
 
     public static FloatWindowManager getInstance() {
         if (sInstance == null) {
-            synchronized (WindowCache.class) {
+            synchronized (FloatWindowManager.class) {
                 if (sInstance == null) {
                     sInstance = new FloatWindowManager(context);
                 }
